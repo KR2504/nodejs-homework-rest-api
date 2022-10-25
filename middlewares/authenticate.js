@@ -11,9 +11,10 @@ const authenticate = async(req, res, next) => {
         const { authorization = '' } = req.headers;
         const [bearer = '', token = ''] = authorization.split(' ');
 
-        if (bearer !== "Bearer") {
+        if (bearer !== "Bearer" || !token) {
             throw RequestError(401, "Not authorized")
         }
+
         try {
             const { id } = jwt.verify(token, SECRET_KEY);
             const user = await User.findById(id);
@@ -28,7 +29,6 @@ const authenticate = async(req, res, next) => {
     } catch (error) {
         next(error)
     }
-
 }
 
 module.exports = authenticate;
