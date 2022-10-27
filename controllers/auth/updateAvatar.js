@@ -14,13 +14,9 @@ const updateAvatar = async(req, res, next) => {
         const fileName = `${_id}.${extention}`
 
         jimp.read(tempUpload)
-            .then(avatarResize => {
-                return avatarResize
-                    .resize(250, 250)
-                    .write(`public/avatars/${fileName}`);
-            })
+            .then(avatarResize => avatarResize.resize(250, 250).write(resultUpload))
             .catch(error => {
-                next(error)
+                console.error(error);
             });
 
         const resultUpload = path.join(avatarDir, fileName)
