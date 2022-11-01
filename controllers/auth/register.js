@@ -4,6 +4,8 @@ const { User, schemas } = require('../../models/user');
 
 const { RequestError } = require('../../helpers');
 
+const gravatar = require('gravatar')
+
 const register = async(req, res, next) => {
     try {
         const { error } = schemas.registerSchema.validate(req.body);
@@ -17,7 +19,9 @@ const register = async(req, res, next) => {
             throw RequestError(409, "Email in use")
         }
         const hashPassword = await bcrypt.hash(password, 10);
-        await User.create({ email, password: hashPassword, subscription });
+        const avatarURL = gravatar.url(email)
+
+        await User.create({ email, password: hashPassword, subscription, avatarURL });
         res.status(201).json({
             email,
             subscription
