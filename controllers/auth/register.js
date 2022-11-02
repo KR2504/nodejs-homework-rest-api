@@ -2,7 +2,9 @@ const bcrypt = require('bcryptjs')
 
 const { User, schemas } = require('../../models/user');
 
-const { RequestError, sendMail, createVerifyMail } = require('../../helpers');
+const { RequestError } = require('../../helpers');
+
+const { createVerifyMail, sendEmail } = require('../../service')
 
 const { nanoid } = require('nanoid');
 
@@ -28,7 +30,7 @@ const register = async(req, res, next) => {
 
         const mail = createVerifyMail(email, verificationToken)
 
-        await sendMail(mail);
+        await sendEmail(mail);
 
         res.status(201).json({
             email,

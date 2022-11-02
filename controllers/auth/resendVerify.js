@@ -1,5 +1,6 @@
 const { User } = require('../../models/user');
-const { RequestError, createVerifyMail, sendMail } = require('../../helpers');
+const { RequestError } = require('../../helpers');
+const { createVerifyMail, sendEmail } = require('../../service')
 
 const resendVerify = async(req, res, next) => {
     const { email } = req.body;
@@ -9,7 +10,7 @@ const resendVerify = async(req, res, next) => {
     }
 
     const mail = createVerifyMail(email, verificationToken)
-    await sendMail(mail)
+    await sendEmail(mail)
 
     res.status(200).json({
         message: "Verification email sent"
